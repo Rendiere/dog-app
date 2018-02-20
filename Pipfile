@@ -12,6 +12,8 @@ numpy = "*"
 keras = "*"
 pillow = "*"
 pytest = "*"
+opencv-python = "*"
+matplotlib = "*"
 
 
 [dev-packages]
