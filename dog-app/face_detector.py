@@ -2,7 +2,9 @@
 Prototyping the automated prediction
 """
 import cv2
+import os
 import matplotlib
+import numpy as np
 
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
@@ -15,20 +17,30 @@ class FaceDetector():
     def __init__(self, classifier_xml=DEFAULT_CLASSIFIER):
         self.face_cascade = cv2.CascadeClassifier(classifier_xml)
 
-    def load_img(self, img_path):
+    def load_img(self, img_path: str):
         """
         Load image from disk
         :param img_path:
         :return:
         """
+        if not os.path.isfile(img_path):
+            raise FileNotFoundError(f'No file found at path: "{img_path}"')
+
         self.img = cv2.imread(img_path)
 
-    def set_img(self, img):
+    def set_img(self, img: np.ndarray):
         """
         Set the image to already loaded image
         :param img:
         :return:
         """
+
+        if type(img) != np.ndarray:
+            raise TypeError(f'Image passed should be a numpy array: {type(img)}')
+
+        if img.size == 0:
+            raise Warning(f'Image passed looks empty...')
+
         self.img = img
 
     def convert_img_bgr_to_grayscale(self, img):
@@ -54,8 +66,6 @@ class FaceDetector():
         :param gray_image:
         :return:
         """
-
-        assert (return_img != return_bboxes, 'Cannot set return_img and return_bboxes both to False or True')
 
         if image_path:
             self.load_img(image_path)
@@ -108,3 +118,4 @@ if __name__ == '__main__':
     facerec = FaceDetector()
 
     img = facerec.detect_faces(image_path='data/test-images/me.jpg', show=True)
+

@@ -7,11 +7,10 @@ name = "pypi"
 
 [packages]
 
-flask = "*"
+Flask = "*"
 numpy = "*"
-keras = "*"
-pillow = "*"
-pytest = "*"
+Keras = "*"
+Pillow = "*"
 opencv-python = "*"
 matplotlib = "*"
 
