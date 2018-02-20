@@ -47,3 +47,24 @@ class FaceDetectorTests(unittest.TestCase):
             facedetector.set_img(np.array([]))
             facedetector.set_img(np.array([],[1,2,3,4]))
 
+
+    def test_detect_faces(self):
+
+        img_path = 'data/test-images/me.jpg'
+        img = plt.imread(img_path)
+
+        facedetector = FaceDetector()
+
+        img_with_faces = facedetector.detect_faces(image_path=img_path, show=False, return_img=True)
+
+        self.assertEqual(type(img_with_faces), np.ndarray)
+        self.assertGreater(img_with_faces.size, 0)
+
+        faces = facedetector.detect_faces(img=img, show=False)
+
+        self.assertEqual(type(faces), np.ndarray)
+        self.assertEqual(len(faces), 1)
+
+        with self.assertRaises(FileNotFoundError):
+            facedetector.detect_faces(image_path='')
+

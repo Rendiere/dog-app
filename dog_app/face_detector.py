@@ -60,17 +60,21 @@ class FaceDetector():
 
         return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    def detect_faces(self, image_path=None, img=None, show=True, return_img=True, return_bboxes=False):
+    def detect_faces(self, image_path=None, img=None, show=True, return_img=False):
         """
         Detect faces from grayscale image
-        :param gray_image:
-        :return:
+
+        :param image_path: path to image
+        :param img: Loaded image
+        :param show: Flag to show image with bboxes on
+        :param return_img: Flag to return image with bounding boxes on
+        :return: array (image or faces)
         """
 
-        if image_path:
+        if image_path is not None:
             self.load_img(image_path)
 
-        elif img:
+        elif img is not None:
             self.set_img(img)
         else:
             raise FileNotFoundError('Please pass values to either image_path or img arguments')
@@ -87,9 +91,6 @@ class FaceDetector():
 
         if return_img:
             return self.img
-
-        elif return_bboxes:
-            return faces
 
         return faces
 
