@@ -1,3 +1,7 @@
+# PROJECT SPECIFIC
+data/uploads/
+
+
 
 .idea/
 __pycache__/

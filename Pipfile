@@ -14,6 +14,8 @@ pillow = "*"
 opencv-python = "*"
 matplotlib = "*"
 "h5py" = "*"
+requests = "*"
+tqdm = "*"
 
 
 [dev-packages]
