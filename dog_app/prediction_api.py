@@ -8,7 +8,7 @@ from flask import Flask, render_template, request
 from keras.preprocessing import image
 from keras.models import Sequential
 from keras.layers import GlobalAveragePooling2D, Dropout, Dense
-from keras.applications.resnet50 import ResNet50, preprocess_input, decode_predictions
+from keras.applications.resnet50 import ResNet50, preprocess_input
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'data/uploads'
@@ -20,11 +20,16 @@ dogbreed_model = None
 features = None
 
 
+# Load the dog names
+fh = open('data/dogs_list.txt')
+dog_names = [line[4:].rstrip().replace('_', ' ') for line in fh]
+fh.close()
+
 def load_model():
     # Load the full resnet model
     print('Loading ResNet model...', end='')
     global Resnet50_model
-    Resnet50_model = ResNet50(weights='imagenet', include_top=False)
+    Resnet50_model = ResNet50(weights='data/saved_models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5', include_top=False)
     print('done')
 
     print('Loading the bottleneck features...', end='')
@@ -34,27 +39,20 @@ def load_model():
 
     # Load the model trained on dog breeds
     # TODO: Save the complete model and not only the weights
+    # TODO: Add batch normalization
     print('Loading the dog breeds classifier...', end='')
     global dogbreed_model
     dogbreed_model = Sequential()
     dogbreed_model.add(GlobalAveragePooling2D(input_shape=features['train'].shape[1:]))
     dogbreed_model.add(Dropout(0.2))
     dogbreed_model.add(Dense(133, activation='softmax'))
-    dogbreed_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    dogbreed_model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
     dogbreed_model.load_weights('data/saved_models/weights.best.ResNet50.hdf5')
-    dogbreed_model._make_predict_function()
     print('done')
-
-def load_dog_names(fname):
-    fh = open(fname)
-    dog_names = [line[4:].rstrip().replace('_', ' ') for line in fh]
-    fh.close()
-    return dog_names
 
 
 def extract_Resnet50(tensor):
-    return ResNet50(weights='imagenet', include_top=False).predict(preprocess_input(tensor))
-    # return Resnet50_model.predict(preprocess_input(tensor))
+    return Resnet50_model.predict(preprocess_input(tensor))
 
 
 def path_to_tensor(img_path):
@@ -70,8 +68,6 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    if request.method != 'POST':
-        raise NotImplementedError('Cannot call predict without posting an image')
 
     # Load the file from request
     file = request.files['image']
@@ -86,12 +82,11 @@ def predict():
     # Make predictions
     predicted_vector = dogbreed_model.predict(bottleneck_feature)
 
-    dog_names = load_dog_names('data/dog_list.txt')
-
     # return dog breed that is predicted by the model
-    print(dog_names[np.argmax(predicted_vector)])
-
-    return None
+    # TODO: Return Sample of predicted breed
+    # TODO: Alter original image with bboxes and labels
+    # TODO: Add probabilities
+    return dog_names[np.argmax(predicted_vector)]
 
 
 if __name__ == '__main__':
@@ -99,4 +94,4 @@ if __name__ == '__main__':
     load_model()
 
     print('\nSERVER UP AND RUNNING')
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True, use_reloader=False)
