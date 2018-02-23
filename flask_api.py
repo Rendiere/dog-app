@@ -123,4 +123,4 @@ if __name__ == '__main__':
     load_data()
 
     print('\nSERVER UP AND RUNNING')
-    app.run(host='0.0.0.0', port=8000, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=8080, use_reloader=False)
