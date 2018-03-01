@@ -83,7 +83,7 @@ class CNNModel():
     def load_dog_names(self):
         # Load the dog names
         fh = open(self.dog_names_filepath)
-        dog_names = [line[4:].rstrip().replace('_', ' ') for line in fh]
+        dog_names = [line[4:].rstrip().lower() for line in fh]
         fh.close()
         return dog_names
 

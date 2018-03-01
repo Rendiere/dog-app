@@ -3,41 +3,34 @@ For each dog breed, copy a random image
 from the training set to be used as a
 sample image.
 
-Download the training dataset from Kaggle before running this script
+Download the testing dataset from Udacity before running this script
 
 Author: Renier Botha
 Date: 1 March 2018
 """
 
-
 import os
 import random
-from shutil import copyfile
-import pandas as pd
 from glob import glob
+from shutil import copyfile
 
-# Read in labels data
-labels_df = pd.read_csv('data/labels.csv',index_col=0)
+# List of directories with images
+dirs = glob('data/test/*')
 
-# read list of images
-images_list = [os.path.basename(f).split('.')[0] for f in glob('data/train/*')]
+for d in dirs:
+    # Get just the dog name
+    dog_name = d[14:]
 
-# Create dataframe with images list
-images_df = pd.DataFrame(images_list, columns=['id'])
-images_df['breed'] = [labels_df.loc[i]['breed'] for i in images_list]
+    # Get a list of images
+    images_list = glob(f'{d}/*.jpg')
 
-# For each dog breed, randomly select one image and copy
-# to sample_images directory
-for breed, breed_df in images_df.groupby('breed'):
-    #     pick a random id
-    ids = breed_df['id'].values
-    chosen_id = random.choice(ids)
+    # Pick a random image
+    rand_image = random.choice(images_list)
 
-    chosen_fname = f'data/train/{chosen_id}.jpg'
+    # Create the filename for the sample image
+    sample_fname = f'data/sample_images/{dog_name}.jpg'
 
-    sample_fname = f'data/sample_images/{breed}.jpg'
+    print('Copying random image for ',dog_name)
 
-    assert (os.path.isfile(chosen_fname))
-
-    print(f'copying {chosen_id} to {sample_fname}')
-    copyfile(chosen_fname, sample_fname)
+    # Copy the image
+    copyfile(rand_image, sample_fname)

@@ -1,6 +1,7 @@
 import io
+import os
 from PIL import Image
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 from flask_cors import CORS
 
 from model import CNNModel
@@ -27,10 +28,15 @@ def predict():
 
     prediction = model.predict(image)
 
-    return jsonify({
-        "prediction": prediction,
-        "face_bboxes": {}
-    })
+    print(prediction)
+
+    sample_file = f'data/sample-images/{prediction}.jpg'
+
+    print(sample_file)
+
+    assert(os.path.isfile(sample_file))
+
+    return send_file(sample_file, mimetype='image')
 
 
 if __name__ == '__main__':
