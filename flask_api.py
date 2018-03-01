@@ -30,7 +30,7 @@ def predict():
 
     print(prediction)
 
-    sample_file = f'data/sample-images/{prediction}.jpg'
+    sample_file = f'data/sample_images/{prediction}.jpg'
 
     print(sample_file)
 
