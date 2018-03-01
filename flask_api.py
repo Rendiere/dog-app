@@ -1,10 +1,12 @@
 import io
 from PIL import Image
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 
 from model import CNNModel
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
@@ -15,6 +17,7 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     global model
+
     # Load the file from request
     file = request.files['image']
 
@@ -23,8 +26,6 @@ def predict():
     image = Image.open(file_bytes)
 
     prediction = model.predict(image)
-
-    print(prediction)
 
     return jsonify({
         "prediction": prediction,
