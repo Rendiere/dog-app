@@ -70,6 +70,3 @@ So, when using the documentation its _super_ important to know whether you are v
 For example, deploying a python app with third-party libraries is a [complicated process](https://cloud.google.com/appengine/docs/standard/python/tools/using-libraries-python-27) using the Standard flow, but with the Flexible flow its as simple as including a `requirements.txt` in your root directory. 
 
 
-
-
-
