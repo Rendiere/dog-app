@@ -1,6 +1,7 @@
 import io
+import os
 from PIL import Image
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 from flask_cors import CORS
 
 from model import CNNModel
@@ -28,8 +29,7 @@ def predict():
     prediction = model.predict(image)
 
     return jsonify({
-        "prediction": prediction,
-        "face_bboxes": {}
+        'prediction': prediction
     })
 
 

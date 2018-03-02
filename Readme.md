@@ -1,6 +1,10 @@
 # Doggo App
-
-CNN based dog breed classifier. Test the app out [here](https://doggo-app-195912.appspot.com/)
+<p align="center">
+  <img src="data/space-doggo.jpg" style="width: 480px;">
+  <br>
+  CNN based dog breed classifier |
+  <a href="https://doggo-app-195912.appspot.com/">DEMO</a>
+</p>
 
 ## Overview
 
@@ -49,11 +53,11 @@ Here are a list of bugs I ran into and things I learned, for future reference.
 
 **Flask DEBUG and Keras aren't friends.**
 
-When running a server locally, I usually set `debug=True` in the Flask `app.run()` command. However, Keras bugs out when you do this, failing to recognize the correct model. 
+When running a server locally, I usually set `debug=True` in the Flask `app.run()` command. However, Keras bugs out when you do this, failing to recognize the correct model.
 
 **Google Apps Default Port**
 
-The default port for applications running on the gcloud servers is `8080`. This is probably somewhere in the docs, but pretty hard to figure out if you've missed it, because the App Engine uses Nginx as a load balancer which returns a 502 error for any errors happening on your application. 
+The default port for applications running on the gcloud servers is `8080`. This is probably somewhere in the docs, but pretty hard to figure out if you've missed it, because the App Engine uses Nginx as a load balancer which returns a 502 error for any errors happening on your application.
 
 So, setting `debug=False` (default), is necessary.
 
@@ -63,10 +67,8 @@ I chose to deploy this app to Google Cloud's AppEngine. These are some points I 
 
 **Standard vs Flexible**
 
-The App Engine has two deployment flows: [Standard](https://cloud.google.com/appengine/docs/standard/python/) and [Flexible](https://cloud.google.com/appengine/docs/flexible/python/). There's a lot of overlap, but it seems like the Standard flow is outdated (and only supports python 2.7), so I chose the Flexible flow. 
+The App Engine has two deployment flows: [Standard](https://cloud.google.com/appengine/docs/standard/python/) and [Flexible](https://cloud.google.com/appengine/docs/flexible/python/). There's a lot of overlap, but it seems like the Standard flow is outdated (and only supports python 2.7), so I chose the Flexible flow.
 
-So, when using the documentation its _super_ important to know whether you are viewing the Standard or Flexible flow docs. They handle things vastly differently. 
+So, when using the documentation its _super_ important to know whether you are viewing the Standard or Flexible flow docs. They handle things vastly differently.
 
-For example, deploying a python app with third-party libraries is a [complicated process](https://cloud.google.com/appengine/docs/standard/python/tools/using-libraries-python-27) using the Standard flow, but with the Flexible flow its as simple as including a `requirements.txt` in your root directory. 
-
-
+For example, deploying a python app with third-party libraries is a [complicated process](https://cloud.google.com/appengine/docs/standard/python/tools/using-libraries-python-27) using the Standard flow, but with the Flexible flow its as simple as including a `requirements.txt` in your root directory.
