@@ -28,15 +28,9 @@ def predict():
 
     prediction = model.predict(image)
 
-    print(prediction)
-
-    sample_file = f'data/sample_images/{prediction}.jpg'
-
-    print(sample_file)
-
-    assert(os.path.isfile(sample_file))
-
-    return send_file(sample_file, mimetype='image')
+    return jsonify({
+        'prediction': prediction
+    })
 
 
 if __name__ == '__main__':
